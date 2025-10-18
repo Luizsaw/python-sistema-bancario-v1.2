@@ -112,75 +112,81 @@ classDiagram
     direction TB
 
     class SistemaBancario {
-        +clientes : list[PessoaFisica]
-        +contas : list[ContaCorrente]
-        +cadastrar_cliente()
-        +abrir_conta()
-        +depositar()
-        +sacar()
-        +exibir_historico()
-        +executar()
-    }
-
-    class Cliente {
-        <<abstract>>
-        -nome : str
-        -endereco : str
-        +__init__(nome, endereco)
-    }
-
-    class PessoaFisica {
-        -cpf : str
-        -data_nascimento : str
-        +__init__(nome, cpf, data_nascimento, endereco)
+        -clientes : list
+        -abrir_conta()
+        -depositar()
+        -sacar()
+        -extrato()
+        -listar_clientes()
+        -menu()
     }
 
     class Conta {
-        <<abstract>>
+        -agencia : str
         -numero : int
         -cliente : Cliente
         -saldo : float
         -historico : Historico
-        +__init__(cliente)
-        +sacar(valor)
-        +depositar(valor)
+        +sacar(valor : float)
+        +depositar(valor : float)
+        +nova_conta(cliente : Cliente, agencia : str, numero : int)
     }
 
     class ContaCorrente {
         -limite : float
         -limite_saques : int
-        +sacar(valor)
+        -saques_realizados : int
+        +sacar(valor : float)
     }
 
-    class Historico {
-        -transacoes : list[Transacao]
-        +adicionar_transacao(transacao)
-        +listar_transacoes()
+    class Cliente {
+        -endereco : str
+        -contas : list
+        +adicionar_conta(conta : Conta)
+    }
+
+    class PessoaFisica {
+        -nome : str
+        -cpf : str
+        -data_nascimento : str
     }
 
     class Transacao {
         <<abstract>>
-        +registrar(conta)
+        -valor : float
+        -data : datetime
+        +registrar(conta : Conta)
     }
 
     class Deposito {
         -valor : float
-        +registrar(conta)
+        +registrar(conta : Conta)
     }
 
     class Saque {
         -valor : float
-        +registrar(conta)
+        +registrar(conta : Conta)
+    }
+
+    class Historico {
+        -transacoes : list
+        +adicionar_transacao(transacao : Transacao)
+        +exibir_historico()
     }
 
     %% Relações
+    SistemaBancario --> PessoaFisica
+
     PessoaFisica --|> Cliente
+    Cliente "1" --> "1..*" Transacao : realiza
+    Cliente "1" --> "1..*" Conta : possui
+
+    Conta "1" --> "1" Historico : contém
     ContaCorrente --|> Conta
+
+    Historico "1" --> "0..*" Transacao : registra
+  
     Deposito --|> Transacao
     Saque --|> Transacao
-    Conta --> Historico
-    Conta --> Cliente
-    Historico --> Transacao
-    SistemaBancario --> PessoaFisica
-    SistemaBancario --> ContaCorrente
-
+   
+    

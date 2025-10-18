@@ -213,7 +213,7 @@ class SistemaBancario:
                     for c in cliente.contas:
                         if c.numero == conta and c.agencia == agencia:
                             operacao_deposito = Deposito(input("Digite o valor do depósito: "), datetime.now().strftime("%d/%m/%Y %H:%M"))
-                            if(operacao_deposito.executar(c)):
+                            if(operacao_deposito.registrar(c)):
                                 c.historico.adicionar_transacao(operacao_deposito)
                 else: 
                     print("Conta não encontrada.")
@@ -234,7 +234,7 @@ class SistemaBancario:
                     for c in cliente.contas:
                         if c.numero == conta and c.agencia == agencia:
                             operacao_saque = Saque(input("Digite o valor do saque: "), datetime.now().strftime("%d/%m/%Y %H:%M"))
-                            if(operacao_saque.executar(c)):
+                            if(operacao_saque.registrar(c)):
                                 c.historico.adicionar_transacao(operacao_saque)
                 else: 
                     print("Conta não encontrada.")

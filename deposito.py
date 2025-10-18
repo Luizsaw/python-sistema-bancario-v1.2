@@ -1,6 +1,6 @@
 from transacao import Transacao
 
 class Deposito(Transacao):
-    def executar(self, conta):
+    def registrar(self, conta):
         if(conta.depositar(self._valor)):
             return True

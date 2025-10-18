@@ -15,5 +15,5 @@ class Transacao(ABC):
         return self._data
 
     @abstractmethod
-    def executar(self, conta):
+    def registrar(self, conta):
         pass
